@@ -4,14 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
-@Setter
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Member extends BaseEntity{
     @Id
     private String username;
@@ -19,11 +16,11 @@ public class Member extends BaseEntity{
     private String password;
 
     private String content;
-    public void change(String password){
+
+    public void changePassword(String password) {
         this.password = password;
     }
-
-    public void changeContent(String contentStr){
-        this.content = contentStr;
+    public void changeContent(String content) {
+        this.content = content;
     }
 }

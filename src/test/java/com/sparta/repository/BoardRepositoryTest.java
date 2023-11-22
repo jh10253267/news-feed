@@ -7,9 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -23,70 +24,59 @@ class BoardRepositoryTest {
     @Autowired
     BoardRepository boardRepository;
 
-    //@Autowired
-    //BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    MemberRepository memberRepository;
-    @DisplayName("[member]")
+    @DisplayName("[Board] [Repository] [Insert]")
     @Test
     void testInsert() {
-        int dataSize = 50;
-        IntStream.rangeClosed(1, dataSize).forEach(i -> {
-            Member member = Member.builder()
-                    .username("username..."+i)
-                    .password("passwordEncoder")
+        IntStream.rangeClosed(1, 50).forEach(i -> {
+            Board board = Board.builder()
+                    .title("title..." + i)
+                    .content("content..." + i)
+                    .writer("user" + (i % 10))
                     .build();
-            Member result = memberRepository.save(member);
-            log.info("Id: "  + result.getUsername());
+            Board result = boardRepository.save(board);
+            log.info("Id: " + result.getId());
         });
 
         //assertThat(memberRepository.countBy().isEqualTo(dataSize));
     }
 
-    @DisplayName("[Member update]")
-    @Test
-    void testUpdate(){
-        String username = "user...1";
-        String password = "1234";
-
-        Optional<Member> result = memberRepository.findById(username);
-
-        Member member = result.orElseThrow();
-
-        //setPassword(passwordEncoder.encode(password));
-
-        Member updateMember = memberRepository.save(member);
-
-        //assertThat(updatedMemeber.getPassword()).isEqualTo("1234");
-    }
-
     @Transactional
+    @DisplayName("[Board] [Repository] [Update]")
     @Test
-    @DisplayName("[Member] [Repository] [Delete]")
-    void testDelete(){
-        String username = "user..1";
+    void testUpdate() {
+        Long id = 1L;
+        String title = "update test title...";
+        String content = "update test content";
 
-        memberRepository.deleteById(username);
+        Optional<Board> result = boardRepository.findById(id);
+        Board board = result.orElseThrow();
 
-        Optional<Member> reuslt= memberRepository.findById(username);
+        board.change(title, content);
+        Board updatedBoard = boardRepository.save(board);
 
-        assertThatCode(reuslt::orElseThrow).isInstanceOf(NoSuchElementException.class);
+        assertThat(updatedBoard.getTitle()).isEqualTo(title);
     }
-
-    @DisplayName("[Memeber] [Repository] [Update] [Password]")
     @Transactional
+    @DisplayName("[Board] [Repository] [Delete]")
     @Test
-    void givenContentStr_whenDoUpdate_thenReturnsUpdatedMemberContent(){
-        String contentStr = "update test";
-        String username = "user...1";
-
-        Optional<Member> result=memberRepository.findById(username);
-        Member member = result.orElseThrow();
-
-        member.changeContent(contentStr);
-        Member updatedMember = memberRepository.save(member);
-
-        assertThat(updatedMember.getContent()).isEqualTo(contentStr);
+    void testDelete() {
+        Long id = 1L;
+        boardRepository.deleteById(id);
+        Optional<Board> result = boardRepository.findById(id);
+        assertThatCode(result::orElseThrow).isInstanceOf(NoSuchElementException.class);
+    }
+    @DisplayName("[Board] [Repository] [Read]")
+    @Test
+    void testRead() {
+        Long id = 1L;
+        Optional<Board> result = boardRepository.findById(id);
+        Board board = result.orElseThrow();
+        log.info(board);
+    }
+    @DisplayName("[Board] [Repository] [ReadAll]")
+    @Test
+    void testReadAll() {
+        List<Board> boards = boardRepository.findAllByOrderByIdDesc();
+        assertThat(boards.size()).isEqualTo(50);
     }
 }

@@ -3,8 +3,7 @@ package com.sparta.repository;
 import com.sparta.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
 public interface MemberRepository extends JpaRepository<Member, String> {
-    Optional<Member> findByUsername(String memberName);
+    //Insert테스트를 위한 메소드(임시)
+    Long countBy();
 }
