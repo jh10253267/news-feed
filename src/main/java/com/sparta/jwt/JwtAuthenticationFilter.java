@@ -1,6 +1,6 @@
 package com.sparta.jwt;
 
-// import com.sparta.security.UserDetailsImpl;
+import com.sparta.security.MemberDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,12 +52,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
         protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
             log.info("로그인 성공 및 JWT 생성");
-            //String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
-            // Authentication attemptAuthentication return null이여서 안됨
-        //String token = jwtUtil.createToken(username);
-        // 토큰의 파라미터로 username(principal().getUser() -> 인증된 유저), role -> (authResult.getPrincipal().getUser().getRole() 인증된 유저의 RoleType : ADMIN || USER)
-        //jwtUtil.addJwtToCookie(token, response);
-        // TOKEN발급, jwt를 cookie속에 넣어줌
+            String username = ((MemberDetailsImpl) authResult.getPrincipal()).getUsername();
+            String token = jwtUtil.createToken(username);
+            // 토큰의 파라미터로 username(principal().getUser() -> 인증된 유저), role -> (authResult.getPrincipal().getUser().getRole() 인증된 유저의 RoleType : ADMIN || USER)
+            jwtUtil.addJwtToCookie(token, response);
+            // TOKEN발급, jwt를 cookie속에 넣어줌
     }
 
     @Override

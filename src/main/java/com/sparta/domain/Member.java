@@ -12,7 +12,9 @@ import lombok.*;
 public class Member extends BaseEntity{
     @Id
     private String username;
+
     private String password;
+
     private String content;
 
     public void changePassword(String password) {

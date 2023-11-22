@@ -1,11 +1,13 @@
 package com.sparta.repository;
 
 import com.sparta.domain.Board;
+import com.sparta.domain.Member;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,8 +20,10 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Log4j2
 class BoardRepositoryTest {
+
     @Autowired
     BoardRepository boardRepository;
+
     @DisplayName("[Board] [Repository] [Insert]")
     @Test
     void testInsert() {
@@ -32,7 +36,10 @@ class BoardRepositoryTest {
             Board result = boardRepository.save(board);
             log.info("Id: " + result.getId());
         });
+
+        //assertThat(memberRepository.countBy().isEqualTo(dataSize));
     }
+
     @Transactional
     @DisplayName("[Board] [Repository] [Update]")
     @Test

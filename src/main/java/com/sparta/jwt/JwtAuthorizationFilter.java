@@ -21,11 +21,11 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     // 들어온 jwt response
     private final JwtUtil jwtUtil;
-    private final MemberDetailsServiceImpl userDetailsService;
+    private final MemberDetailsServiceImpl memberDetailsService;
 
-    public JwtAuthorizationFilter(JwtUtil jwtUtil, MemberDetailsServiceImpl userDetailsService) {
+    public JwtAuthorizationFilter(JwtUtil jwtUtil, MemberDetailsServiceImpl memberDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsService = userDetailsService;
+        this.memberDetailsService = memberDetailsService;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // 인증 객체 생성
     private Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
