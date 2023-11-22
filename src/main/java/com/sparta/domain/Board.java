@@ -24,4 +24,8 @@ public class Board extends BaseEntity{
     fetch = FetchType.LAZY)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
+    public void change(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
