@@ -3,6 +3,8 @@ package com.sparta.repository;
 import com.sparta.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
-    Member findByUsername(String memberName);
+import java.util.Optional;
+
+public interface MemberRepository extends JpaRepository<Member, String> {
+    Optional<Member> findByUsername(String memberName);
 }
