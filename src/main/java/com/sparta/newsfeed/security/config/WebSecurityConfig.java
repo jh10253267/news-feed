@@ -1,9 +1,9 @@
-package com.sparta.config;
+package com.sparta.newsfeed.security.config;
 
-import com.sparta.jwt.JwtAuthenticationFilter;
-import com.sparta.jwt.JwtAuthorizationFilter;
-import com.sparta.jwt.JwtUtil;
-import com.sparta.security.MemberDetailsServiceImpl;
+import com.sparta.newsfeed.security.jwt.JwtAuthenticationFilter;
+import com.sparta.newsfeed.security.jwt.JwtAuthorizationFilter;
+import com.sparta.newsfeed.security.jwt.JwtUtil;
+import com.sparta.newsfeed.security.service.MemberDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
