@@ -1,10 +1,9 @@
-package com.sparta.newsfeed.security.config;
+package com.sparta.config;
 
-import com.sparta.newsfeed.security.jwt.JwtAuthenticationFilter;
-import com.sparta.newsfeed.security.jwt.JwtAuthorizationFilter;
-//import com.sparta.jwt.JwtUtil;
-import com.sparta.newsfeed.security.jwt.JwtUtil;
-import com.sparta.newsfeed.security.service.MemberDetailsServiceImpl;
+import com.sparta.jwt.JwtAuthenticationFilter;
+import com.sparta.jwt.JwtAuthorizationFilter;
+import com.sparta.jwt.JwtUtil;
+import com.sparta.security.MemberDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +35,7 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-        // 수동 등록
+        // AuthenticationManager를 빈 수동 등록(인증을 위해)
     }
 
     @Bean
@@ -44,13 +43,13 @@ public class WebSecurityConfig {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
-        // 인증 필터 등록
+        // Jwt를 사용한 인증을 처리하는 필터를 빈으로 등록
     }
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtUtil, memberDetailsService);
-        // MemberDetailsServiceImpl memberDetailsService
+        // Jwt를 사용한 인가를 처리하는 필터를 빈으로 등록
     }
 
     @Bean
@@ -66,14 +65,20 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("api/user/**","user/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        // 이거 잠시 테스트해야함
+                        .requestMatchers("api/user/**").permitAll()
+                        // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
         http.formLogin((formLogin) ->
                 formLogin
                         .loginPage("/user/login-page").permitAll()
+        ).logout(logout ->
+                logout
+                        .logoutUrl("/logout")                   // 로그아웃 URL 설정
+                        .logoutSuccessUrl("/user/login-page")   // 로그아웃 성공 시 이동할 페이지
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
         );
 
         // 필터 관리
