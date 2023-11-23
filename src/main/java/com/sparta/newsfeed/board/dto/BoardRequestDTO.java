@@ -2,6 +2,7 @@ package com.sparta.newsfeed.board.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
