@@ -24,8 +24,7 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board",
     cascade = {CascadeType.ALL},
     fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comment;
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
