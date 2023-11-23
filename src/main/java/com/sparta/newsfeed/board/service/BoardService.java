@@ -18,12 +18,13 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
 
-    public void register(BoardRequestDTO boardRegisterDTO) {
+    public Long register(BoardRequestDTO boardRequestDTO) {
         Board board = Board.builder()
-                .title(boardRegisterDTO.getTitle())
-                .content(boardRegisterDTO.getContent())
+                .title(boardRequestDTO.getTitle())
+                .content(boardRequestDTO.getContent())
                 .build();
-        boardRepository.save(board);
+        Long id = boardRepository.save(board).getId();
+        return id;
     }
     @Transactional(readOnly = true)
     public BoardResponseDTO read(Long id) {
@@ -33,12 +34,13 @@ public class BoardService {
         BoardResponseDTO boardResponseDTO = modelMapper.map(board, BoardResponseDTO.class);
         return boardResponseDTO;
     }
-    public void modify(Long id, BoardRequestDTO boardRequestDTO) {
+    public BoardResponseDTO modify(Long id, BoardRequestDTO boardRequestDTO) {
         Optional<Board> result = boardRepository.findById(id);
         Board board = result.orElseThrow();
 
         board.change(boardRequestDTO.getTitle(), boardRequestDTO.getContent());
-        boardRepository.save(board);
+        Board modBoard = boardRepository.save(board);
+        return modelMapper.map(modBoard, BoardResponseDTO.class);
     }
     public void delete(Long id) {
         boardRepository.deleteById(id);
