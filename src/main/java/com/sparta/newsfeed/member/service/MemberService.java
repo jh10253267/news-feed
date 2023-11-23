@@ -21,8 +21,8 @@ public class MemberService {
         String username = signupDto.getUsername();
         String bcrytPassword = passwordEncoder.encode(signupDto.getPassword());
         String content = signupDto.getContent();
+
         Optional<Member> checkUsername = memberRepository.findById(username);
-        // email과 username은 중복되면 안됨
         if(checkUsername.isPresent()){
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
@@ -38,13 +38,33 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(RequestProfileUpdateDto profileUpdateDto){
-        Member memberEntity = memberRepository.findById(profileUpdateDto.getUsername())
-                .orElseThrow(()->{
-                    throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
-                });
-        memberEntity.changeContent(profileUpdateDto.getContent());
-        memberRepository.save(memberEntity);
+    public Member updateMember(RequestUpdateProfileDto updateProfileDto, MemberDetailsImpl memberDetails){
+        String loginUsername = memberDetails.getUsername();
+        String updateProfileUsername = updateProfileDto.getUsername();
+
+        if(!loginUsername.equals(updateProfileUsername)){
+            throw new IllegalArgumentException("해당 로그인 유저네임과 변경하려는 사용자의 유저네임이 다릅니다.");
+        }
+        Member memberEntity = memberRepository.findById(updateProfileUsername).orElseThrow(()-> new IllegalArgumentException("해당 아이디는 찾을 수 없습니다."));
+
+        String rawPassword = updateProfileDto.getPassword();
+        // 첫번째 입력받은 비밀번호
+        String rawPasswordConfirm = updateProfileDto.getPasswordConfirm();
+        // 두 번째 입력받은 비밀번호
+        if (StringUtils.isNotBlank(rawPassword) || StringUtils.isNotBlank(rawPasswordConfirm)) {
+            // 비밀번호 일치 확인
+            if (!rawPassword.equals(rawPasswordConfirm)) {
+                throw new IllegalArgumentException("첫 번째 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+            }
+
+            // 새 비밀번호를 사용하여 비밀번호 업데이트
+            String bcrytPassword = bCryptPasswordEncoder.encode(rawPassword);
+            memberEntity.setPassword(bcrytPassword);
+        }
+
+        memberEntity.setUsername(updateProfileUsername);
+        memberEntity.setContent(updateProfileDto.getContent());
+
         return memberEntity;
     }
 }
