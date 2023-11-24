@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<div>
+    <div class="login-id-label">아이디</div>
+    <input type="text" name="username" id="username" class="loginUsername">
+
+    <div class="login-id-label">비밀번호</div>
+    <input type="password" name="password" id="password" class="loginPassword">
+
+    <button id="login-id-submit" onclick="login()">로그인</button>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        // 토큰 삭제
+        Cookies.remove('Authorization', {path: '/'});
+    });
+    const host = 'http://' + window.location.host;
+
+    function login() {
+        let username = $('#username').val();
+        let password = $('#password').val();
+
+        $.ajax({
+            type: "POST",
+            url: `/api/user/login`,
+            contentType: "application/json",
+            data: JSON.stringify({username: username, password: password}),
+        }).done(function (res, status, xhr) {
+            Cookies.set(xhr.getResponseHeader('Authorization'));
+            console.log(res);
+            console.log(xhr);
+            // client에서 처리를 해줘야함
+            // localhost:8080~~ -> domain에 따라 쿠키가 따라다닌다
+            // window.location.href = host;
+        }).fail(function (xhr, textStatus, errorThrown) {
+            console.log('statusCode: ' + xhr.status);
+            window.location.href = host + '/api/user/login-page?error'
+        });
+    }
+</script>
+</html>
