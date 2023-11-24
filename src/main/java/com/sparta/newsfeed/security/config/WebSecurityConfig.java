@@ -62,34 +62,34 @@ public class WebSecurityConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-        http.authorizeHttpRequests((authorizeHttpRequests) ->
-                authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("api/user/**").permitAll()
-                        // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-        );
+//        http.authorizeHttpRequests((authorizeHttpRequests) ->
+//                authorizeHttpRequests
+//                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
+//                        .requestMatchers("api/user/**").permitAll()
+//                        // '/api/user/'로 시작하는 요청 모두 접근 허가
+//                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+//        );
 
-        http.formLogin((formLogin) ->
-                formLogin
-                        .loginPage("/user/login-page").permitAll()
-        ).logout(logout ->
-                logout
-                        .logoutUrl("/logout")                   // 로그아웃 URL 설정
-                        .logoutSuccessUrl("/user/login-page")   // 로그아웃 성공 시 이동할 페이지
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-        );
-
-        // 필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-        // JwtAuthenticationFilter.class전에 jwtAuthorizationFilter() 수행
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // UsernamePasswordAuthenticationFilter.class전에 jwtAuthenticationFilter() 수행
-        http.exceptionHandling((exceptionHandling)->
-                exceptionHandling
-                        .accessDeniedPage("/forbidden.html")
-        );
+//        http.formLogin((formLogin) ->
+//                formLogin
+//                        .loginPage("/user/login-page").permitAll()
+//        ).logout(logout ->
+//                logout
+//                        .logoutUrl("/logout")                   // 로그아웃 URL 설정
+//                        .logoutSuccessUrl("/user/login-page")   // 로그아웃 성공 시 이동할 페이지
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID")
+//        );
+//
+//        // 필터 관리
+//        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+//        // JwtAuthenticationFilter.class전에 jwtAuthorizationFilter() 수행
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        // UsernamePasswordAuthenticationFilter.class전에 jwtAuthenticationFilter() 수행
+//        http.exceptionHandling((exceptionHandling)->
+//                exceptionHandling
+//                        .accessDeniedPage("/forbidden.html")
+//        );
         // 접근 불가페이지
         return http.build();
     }

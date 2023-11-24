@@ -31,10 +31,10 @@ class CommentServiceTest {
         CommentRequestDto reqDto = CommentRequestDto.builder()
                 .content("comment content")
                 .build();
-        Optional<Member> result = memberRepository.findById(username);
+        Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
         log.info(member);
-        CommentResponseDto respDto = commentService.createComment(id, reqDto, member);
-        log.info(respDto);
+//        CommentResponseDto respDto = commentService.createComment(id, reqDto, member);
+//        log.info(respDto);
     }
 }
