@@ -9,6 +9,8 @@ import com.sparta.newsfeed.board.repository.BoardRepository;
 import com.sparta.newsfeed.comment.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public CommentResponseDto createComment(Long boardId, CommentRequestDto commentRequestDto, Member member) {
+    public ResponseEntity<CommentResponseDto> createComment(Long boardId, CommentRequestDto commentRequestDto, Member member) {
         // 게시글 있는 지 확인
         Board board = boardRepository.findById(boardId).orElseThrow(() ->
                 new IllegalArgumentException("게시글이 존재하지 않습니다."));
@@ -37,12 +39,12 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        return new CommentResponseDto(comment);
+        return ResponseEntity.status(HttpStatus.OK).body(new CommentResponseDto(comment));
     }
 
-    // 댓글 조회
-    /*public List<CommentResponseDto> getComments(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(
+    /*// 댓글 조회
+    public List<CommentResponseDto> getComments(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new NullPointerException("존재하지 않습니다")
         );
 
@@ -58,29 +60,30 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, Member member) {
+    public ResponseEntity<?> updateComment(Long commentId, CommentRequestDto commentRequestDto, Member member) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
         // 댓글 작성자와 입력값 작성자 비교, 일치하면 ㄱㄱ
         if (comment.getMember().getUsername().equals(member.getUsername())) {
             comment.update(commentRequestDto);
-            return new CommentResponseDto(comment);
+            return ResponseEntity.status(HttpStatus.OK).body(new CommentResponseDto(comment));
         } else {
-            throw new IllegalArgumentException("작성자만 수정이 가능합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("작성자만 수정할 수 있습니다.");
         }
     }
 
     // 댓글 삭제
-    public void deleteComment(Long commentId, Member member) {
+    public ResponseEntity<?> deleteComment(Long commentId, Member member) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
         // 댓글 작성자와 입력값 작성자 비교, 일치하면 ㄱㄱ
         if (comment.getMember().getUsername().equals(member.getUsername())) {
             commentRepository.delete(comment);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글을 삭제하였습니다.");
         } else {
-            throw new IllegalArgumentException("작성자만 수정이 가능합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("작성자만 삭제할 수 있습니다.");
         }
     }
 

@@ -22,11 +22,11 @@ public class Comment extends BaseEntity {
     private String content; // 댓글 내용
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardId", nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "??", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Member member;
 
 
