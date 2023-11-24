@@ -45,10 +45,10 @@ class MemberRepositoryTest {
     @Transactional
     @Test
     void testPasswordUpdate() {
-        String username = "user...1";
+        Long id = 1L;
         String updatePassword = "1234";
 
-        Optional<Member> result = memberRepository.findById(username);
+        Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
 
         member.changePassword(updatePassword);
@@ -61,10 +61,10 @@ class MemberRepositoryTest {
     @Transactional
     @Test
     void testUpdateContent() {
-        String username = "user...1";
+        Long id = 1L;
         String contentStr = "update test content...";
 
-        Optional<Member> result = memberRepository.findById(username);
+        Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
 
         member.changeContent(contentStr);
@@ -76,11 +76,11 @@ class MemberRepositoryTest {
     @Transactional
     @Test
     void testDelete() {
-        String username = "user...1";
+        Long id = 1L;
 
-        memberRepository.deleteById(username);
+        memberRepository.deleteById(id);
 
-        Optional<Member> result = memberRepository.findById(username);
+        Optional<Member> result = memberRepository.findById(id);
         assertThatCode(result::orElseThrow).isInstanceOf(NoSuchElementException.class);
     }
 
