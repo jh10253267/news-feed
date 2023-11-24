@@ -80,5 +80,4 @@ class BoardRepositoryTest {
         List<Board> boards = boardRepository.findAllByOrderByIdDesc();
         assertThat(boards.size()).isEqualTo(50);
     }
-
 }
