@@ -63,7 +63,7 @@ public class JwtUtil {
         try {
             token = URLEncoder.encode(token, "utf-8").replaceAll("\\+", "%20");
             // Cookie Value 에는 공백이 불가능해서 encoding 진행
-
+            log.info("인증 헤더 : "+AUTHORIZATION_HEADER+"| Token : "+token);
             Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
             cookie.setPath("/");
             log.info("cookie 추가");
