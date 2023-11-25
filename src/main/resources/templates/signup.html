@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>회원가입 페이지</title>
+</head>
+<body>
+<div id="signup">
+    <form id="signup-form" action="/api/user/signup" method="post" onsubmit="submitForm()">
+        <div class="signup-label">Username</div>
+        <input type="text" id="username" name="username" placeholder="Username" class="signup-input-box">
+
+        <div class="signup-label">Password</div>
+        <input type="password" id="password" name="password" placeholder="Password" class="signup-input-box">
+
+        <div class="signup-label">Content</div>
+        <input type="text" id="content" name="content" placeholder="Content" class="signup-input-box">
+
+        <button id="signup-submit" type="submit">회원 가입</button>
+    </form>
+</div>
+
+<script>
+    function submitForm() {
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const content = document.getElementById('content').value;
+
+        const data = {
+            username: username,
+            password: password,
+            content: content
+        };
+
+        $.ajax({
+            url: '/api/user/signup',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).done(function(data) {
+            console.log('Success:', data);
+            window.location.href = "/user/login-page";
+        }).fail(function(error) {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>

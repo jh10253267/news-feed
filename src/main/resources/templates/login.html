@@ -17,6 +17,7 @@
     <input type="password" name="password" id="password" class="loginPassword">
 
     <button id="login-id-submit" onclick="login()">로그인</button>
+    <button id="login-id-btn" onclick="location.href='/user/signup'">회원가입</button>
 </div>
 </body>
 <script>
@@ -39,10 +40,12 @@
             Cookies.set(xhr.getResponseHeader('Authorization'));
             console.log(res);
             console.log(xhr);
+            alert("로그인 성공!");
             // client에서 처리를 해줘야함
             // localhost:8080~~ -> domain에 따라 쿠키가 따라다닌다
             // window.location.href = host;
         }).fail(function (xhr, textStatus, errorThrown) {
+            alert("로그인 실패!");
             console.log('statusCode: ' + xhr.status);
             window.location.href = host + '/api/user/login-page?error'
         });
