@@ -8,6 +8,5 @@ import lombok.Getter;
 @Data
 @Builder
 public class CommentRequestDto {
-    private Long boardId;
     private String content;
 }
