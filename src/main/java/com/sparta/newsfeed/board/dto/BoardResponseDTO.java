@@ -10,7 +10,7 @@ import java.util.List;
 public class BoardResponseDTO {
     private String title;
     private String content;
-    private String writer;
-    private List<Comment> comments;
+    private Long userId;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

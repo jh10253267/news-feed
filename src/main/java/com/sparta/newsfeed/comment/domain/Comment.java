@@ -29,9 +29,6 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private Member member;
 
-
-
-
     public Comment(Member member, CommentRequestDto commentRequestDto, Board board) {
         this.member = member;
         this.board = board;

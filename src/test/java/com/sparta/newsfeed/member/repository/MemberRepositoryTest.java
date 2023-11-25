@@ -30,7 +30,7 @@ class MemberRepositoryTest {
         int dataSize = 50;
         IntStream.rangeClosed(1, dataSize).forEach(i -> {
             Member member = Member.builder()
-                    .username("user..." + i)
+                    .username("user" + i)
                     .password(passwordEncoder.encode("1111"))
                     .content("content..." + i)
                     .build();
