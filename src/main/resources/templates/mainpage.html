@@ -12,7 +12,7 @@
 <script>
     function logout() {
         alert("로그 아웃!");
-        // 토큰 삭제
+        // 토큰 삭제 
         Cookies.remove('Authorization', { path: '/' });
         window.location.href = "/api/user/login-page";
     }

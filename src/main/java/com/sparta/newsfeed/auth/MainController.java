@@ -37,5 +37,6 @@ public class MainController {
     @GetMapping("/")
     public String mainPage(){
         return "mainpage";
+
     }
 }
