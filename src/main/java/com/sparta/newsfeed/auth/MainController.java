@@ -33,4 +33,10 @@ public class MainController {
     public String signupPage(){
         return "signup";
     }
+
+    @GetMapping("/")
+    public String mainPage(){
+        return "mainpage";
+
+    }
 }
