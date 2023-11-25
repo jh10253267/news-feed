@@ -43,7 +43,7 @@
             alert("로그인 성공!");
             // client에서 처리를 해줘야함
             // localhost:8080~~ -> domain에 따라 쿠키가 따라다닌다
-            // window.location.href = host;
+            window.location.href = "/";
         }).fail(function (xhr, textStatus, errorThrown) {
             alert("로그인 실패!");
             console.log('statusCode: ' + xhr.status);
