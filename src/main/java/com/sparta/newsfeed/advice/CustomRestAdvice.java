@@ -41,16 +41,23 @@ public class CustomRestAdvice {
 
         Map<String, String> errorMap = new HashMap<>();
 
-        errorMap.put("message", "No Such Element Exception");
+        errorMap.put("message", "해당 항목은 존재하지 않습니다.");
         return ResponseEntity.badRequest().body(errorMap);
     }
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Map<String, String>> handleRuntimeException(Exception e) {
-
         log.error(e);
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("massage", e.getMessage());
+        return ResponseEntity.badRequest().body(errorMap);
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Map<String, String>> handlerIligalArgumentException(Exception e) {
+        log.error(e);
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("message", e.getMessage());
         return ResponseEntity.badRequest().body(errorMap);
     }
 
