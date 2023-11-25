@@ -4,15 +4,15 @@ package com.sparta.newsfeed.comment.controller;
 import com.sparta.newsfeed.comment.dto.CommentRequestDto;
 import com.sparta.newsfeed.comment.dto.CommentResponseDto;
 import com.sparta.newsfeed.comment.service.CommentService;
-import com.sparta.newsfeed.member.domain.Member;
 import com.sparta.newsfeed.security.service.MemberDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,9 +23,13 @@ public class CommentController {
 
     // 댓글 작성
     @Operation(summary = "댓글 작성", description = "로그인한 사용자는 게시글에 댓글을 남길 수 있다.")
-    @PostMapping("/boards/{boardId}/comments")
+    @PostMapping(value = "/boards/{boardId}/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long boardId, @RequestBody CommentRequestDto commentRequestDto,
-                                                            @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+                                                            @AuthenticationPrincipal MemberDetailsImpl memberDetails,
+                                                            BindingResult bindingResult) throws BindException{
+        if(bindingResult.hasErrors()) {
+            throw  new BindException(bindingResult);
+        }
         return commentService.createComment(boardId, commentRequestDto, memberDetails.getMember());
     }
 
@@ -39,7 +43,12 @@ public class CommentController {
     @Operation(summary = "댓글 수정", description = "로그인한 사용자는 자신의 댓글을 수정할 수 있다.")
     @PutMapping("/boards/{boardId}/comments/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto,
-                                            @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+                                           @AuthenticationPrincipal MemberDetailsImpl memberDetails,
+                                           BindingResult bindingResult) throws BindException {
+        if(bindingResult.hasErrors()) {
+            throw  new BindException(bindingResult);
+        }
+
         return commentService.updateComment(commentId, commentRequestDto, memberDetails.getMember());
     }
     

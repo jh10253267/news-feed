@@ -5,12 +5,14 @@ import com.sparta.newsfeed.board.dto.BoardResponseDTO;
 import com.sparta.newsfeed.board.service.BoardService;
 import com.sparta.newsfeed.security.service.MemberDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,9 +27,13 @@ public class BoardRestController {
 
     @Operation(summary = "게시글 등록", description = "로그인한 사용자는 게시판에 게시글을 등록할 수 있다.")
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> register(@RequestBody BoardRequestDTO boardRequestDTO,
-                                                        @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
-        log.info(boardRequestDTO);
+    public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody BoardRequestDTO boardRequestDTO,
+                                                        BindingResult bindingResult,
+                                                        @AuthenticationPrincipal MemberDetailsImpl memberDetails) throws BindException{
+        log.info(bindingResult.hasErrors());
+        if(bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
         Map<String, Object> map = new HashMap<>();
         boardService.register(boardRequestDTO, memberDetails.getMember());
         map.put("result", "success");
@@ -43,8 +49,12 @@ public class BoardRestController {
     }
     @Operation(summary = "게시글 수정", description = "로그인한 사용자는 자신의 게시물을 수정할 수 있다.")
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> modify(@PathVariable("id") Long id, @RequestBody BoardRequestDTO boardRequestDTO,
-                                      @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
+    public ResponseEntity<Map<String, Object>> modify(@PathVariable("id") Long id, @Valid @RequestBody BoardRequestDTO boardRequestDTO,
+                                      BindingResult bindingResult,
+                                      @AuthenticationPrincipal MemberDetailsImpl memberDetails) throws BindException {
+        if(bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
         Map<String, Object> map = new HashMap<>();
 
         boardService.modify(id, boardRequestDTO, memberDetails.getMember());
@@ -52,7 +62,7 @@ public class BoardRestController {
         map.put("result","success");
         return ResponseEntity.ok(map);
     }
-    @Operation(summary = "게시글 수정", description = "로그인한 사용자는 자신의 게시물을 삭제할 수 있다.")
+    @Operation(summary = "게시글 삭제", description = "로그인한 사용자는 자신의 게시물을 삭제할 수 있다.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") Long id,
                                       @AuthenticationPrincipal MemberDetailsImpl memberDetails) {

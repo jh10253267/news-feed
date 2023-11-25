@@ -40,13 +40,12 @@ class CommentServiceTest {
 
     @Test
     void testCreate() {
-        Long userId = 1L;
+        Long userId = 3L;
         Optional<Member> result = memberRepository.findById(userId);
         Member member = result.orElseThrow();
         CommentRequestDto commentRequestDto = CommentRequestDto.builder()
-                .boardId(1L)
                 .content("test")
                 .build();
-        commentService.createComment(1L, commentRequestDto, member);
+        commentService.createComment(5L, commentRequestDto, member);
     }
 }
