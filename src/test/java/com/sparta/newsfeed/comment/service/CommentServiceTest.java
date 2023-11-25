@@ -37,4 +37,16 @@ class CommentServiceTest {
 //        CommentResponseDto respDto = commentService.createComment(id, reqDto, member);
 //        log.info(respDto);
     }
+
+    @Test
+    void testCreate() {
+        Long userId = 1L;
+        Optional<Member> result = memberRepository.findById(userId);
+        Member member = result.orElseThrow();
+        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+                .boardId(1L)
+                .content("test")
+                .build();
+        commentService.createComment(1L, commentRequestDto, member);
+    }
 }

@@ -9,6 +9,7 @@ import com.sparta.newsfeed.board.repository.BoardRepository;
 import com.sparta.newsfeed.comment.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
@@ -28,7 +30,7 @@ public class CommentService {
         // 게시글 있는 지 확인
         Board board = boardRepository.findById(boardId).orElseThrow(() ->
                 new IllegalArgumentException("게시글이 존재하지 않습니다."));
-
+        log.info(board);
        /* Comment comment = Comment.builder()
                 .member(member)
                 .content(commentRequestDto.getContent())
@@ -36,7 +38,7 @@ public class CommentService {
                 .build();*/
 
         Comment comment = new Comment(member, commentRequestDto, board);
-
+        log.info("save");
         commentRepository.save(comment);
 
         return ResponseEntity.status(HttpStatus.OK).body(new CommentResponseDto(comment));

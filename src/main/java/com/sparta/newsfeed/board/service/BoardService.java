@@ -4,6 +4,7 @@ import com.sparta.newsfeed.board.domain.Board;
 import com.sparta.newsfeed.board.dto.BoardRequestDTO;
 import com.sparta.newsfeed.board.dto.BoardResponseDTO;
 import com.sparta.newsfeed.board.repository.BoardRepository;
+import com.sparta.newsfeed.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,13 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
 
-    public Long register(BoardRequestDTO boardRequestDTO) {
+    public void register(BoardRequestDTO boardRequestDTO, Member member) {
         Board board = Board.builder()
                 .title(boardRequestDTO.getTitle())
                 .content(boardRequestDTO.getContent())
+                .member(member)
                 .build();
-        Long id = boardRepository.save(board).getId();
-        return id;
+        boardRepository.save(board).getId();
     }
     @Transactional(readOnly = true)
     public BoardResponseDTO read(Long id) {
@@ -34,15 +35,28 @@ public class BoardService {
         BoardResponseDTO boardResponseDTO = modelMapper.map(board, BoardResponseDTO.class);
         return boardResponseDTO;
     }
-    public BoardResponseDTO modify(Long id, BoardRequestDTO boardRequestDTO) {
+    public BoardResponseDTO modify(Long id, BoardRequestDTO boardRequestDTO, Member member) {
         Optional<Board> result = boardRepository.findById(id);
         Board board = result.orElseThrow();
 
-        board.change(boardRequestDTO.getTitle(), boardRequestDTO.getContent());
-        Board modBoard = boardRepository.save(board);
-        return modelMapper.map(modBoard, BoardResponseDTO.class);
+        if(member.getUsername().equals(board.getMember().getUsername())) {
+            board.change(boardRequestDTO.getTitle(), boardRequestDTO.getContent());
+            Board modBoard = boardRepository.save(board);
+            return modelMapper.map(modBoard, BoardResponseDTO.class);
+        } else {
+            throw new RuntimeException("작성자만 자신의 게시물을 수정할 수 있습니다.");
+        }
+
     }
-    public void delete(Long id) {
-        boardRepository.deleteById(id);
+    public void delete(Long id, Member member) {
+        Optional<Board> result = boardRepository.findById(id);
+        Board board = result.orElseThrow();
+
+        if(member.getUsername().equals(board.getMember().getUsername())) {
+            boardRepository.deleteById(id);
+        } else {
+            throw new RuntimeException();
+        }
+
     }
 }
