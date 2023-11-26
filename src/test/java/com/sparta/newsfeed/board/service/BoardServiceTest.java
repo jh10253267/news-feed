@@ -7,7 +7,6 @@ import com.sparta.newsfeed.board.dto.BoardResponseDTO;
 import com.sparta.newsfeed.board.repository.BoardRepository;
 import com.sparta.newsfeed.member.domain.Member;
 import com.sparta.newsfeed.member.repository.MemberRepository;
-import com.sparta.newsfeed.member.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

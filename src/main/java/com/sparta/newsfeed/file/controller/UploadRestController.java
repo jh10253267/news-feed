@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,12 +23,12 @@ import java.util.*;
 @RestController
 @Log4j2
 @RequestMapping("/api/files")
-public class UpDownController {
+public class UploadRestController {
     @Value("${com.sparta.newfeed.upload.path}")
     private String uploadPath;
 
     @Operation(summary = "이미지 파일 업로드", description = "Post요청을 통해 이미지를 업로드할 수 있다.")
-    @PostMapping(value="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<UploadResultDTO> upload(UploadFileDTO uploadFileDTO) {
         log.info(uploadFileDTO);
 
@@ -63,7 +62,7 @@ public class UpDownController {
         return null;
     }
     @Operation(summary = "이미지 파일 조회", description = "GET요청을 통해 이미지를 조회할 수 있다.")
-    @GetMapping("/view/{fileName}")
+    @GetMapping("/{fileName}")
     public ResponseEntity<Resource> viewFileGet(@PathVariable String fileName) {
         Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
 
@@ -77,8 +76,8 @@ public class UpDownController {
         }
         return ResponseEntity.ok().headers(httpHeaders).body(resource);
     }
-    @Operation(summary = "이미지 파일 삭제", description = "DELETE요청을 통해 이미지를 작세할 수 있다.")
-    @DeleteMapping("/remove/{fileName}")
+    @Operation(summary = "이미지 파일 삭제", description = "DELETE요청을 통해 이미지를 삭제할 수 있다.")
+    @DeleteMapping("/{fileName}")
     public Map<String, Boolean> removeFile(@PathVariable String fileName) {
         Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
         String resourceName = resource.getFilename();

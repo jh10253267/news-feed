@@ -75,7 +75,7 @@ public class BoardService {
                           .title(board.getTitle())
                           .content(board.getContent())
                           .createdAt(board.getCreatedAt())
-                          .member(board.getMember())
+                          .writer(board.getMember().getUsername())
                           .build();
                   List<BoardImageDTO> imageDTOS = board.getImageSet().stream().sorted()
                           .map(boardImage -> BoardImageDTO.builder()
