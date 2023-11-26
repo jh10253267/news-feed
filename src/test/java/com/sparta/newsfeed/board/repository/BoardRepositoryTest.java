@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.board.repository;
 
 import com.sparta.newsfeed.board.domain.Board;
+import com.sparta.newsfeed.board.dto.BoardRequestDTO;
 import com.sparta.newsfeed.member.domain.Member;
 import com.sparta.newsfeed.member.repository.MemberRepository;
 import lombok.extern.log4j.Log4j2;
@@ -10,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +61,7 @@ class BoardRepositoryTest {
 
         assertThat(updatedBoard.getTitle()).isEqualTo(title);
     }
+
     @Transactional
     @DisplayName("[Board] [Repository] [Delete]")
     @Test
@@ -71,6 +71,7 @@ class BoardRepositoryTest {
         Optional<Board> result = boardRepository.findById(id);
         assertThatCode(result::orElseThrow).isInstanceOf(NoSuchElementException.class);
     }
+
     @DisplayName("[Board] [Repository] [Read]")
     @Test
     void testRead() {
@@ -79,10 +80,31 @@ class BoardRepositoryTest {
         Board board = result.orElseThrow();
         log.info(board);
     }
+
     @DisplayName("[Board] [Repository] [ReadAll]")
     @Test
     void testReadAll() {
         List<Board> boards = boardRepository.findAllByOrderByIdDesc();
         assertThat(boards.size()).isEqualTo(50);
+    }
+
+    @Test
+    void name() {
+        Optional<Member> result = memberRepository.findById(1L);
+        Member member = result.orElseThrow();
+        for (int i = 0; i <= 100; i++) {
+            Board board = Board.builder()
+                    .title("Title..." + i)
+                    .member(member)
+                    .content("Content..." + i)
+                    .build();
+            for (int j = 0; j < 3; j++) {
+                if (i % 5 == 0) {
+                    continue;
+                }
+                board.addImage(UUID.randomUUID().toString(), i+"file"+j+".jpg");
+            }
+            boardRepository.save(board);
+        }
     }
 }
