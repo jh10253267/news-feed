@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.board.service;
 
 import com.sparta.newsfeed.board.domain.Board;
+import com.sparta.newsfeed.board.dto.BoardListAllDTO;
 import com.sparta.newsfeed.board.dto.BoardRequestDTO;
 import com.sparta.newsfeed.board.dto.BoardResponseDTO;
 import com.sparta.newsfeed.board.repository.BoardRepository;
@@ -14,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -74,5 +78,58 @@ class BoardServiceTest {
         Member member = result.orElseThrow();
         boardService.delete(id, member);
     }
+    @Test
+    void testRegisterWithImages() {
+        BoardRequestDTO boardRequestDTO = BoardRequestDTO.builder()
+                .title("title....")
+                .content("content...")
+                .build();
 
+        boardRequestDTO.setFileNames(
+                Arrays.asList(
+                        UUID.randomUUID()+"_aaa.jpg",
+                        UUID.randomUUID()+"_bbb.jpg",
+                        UUID.randomUUID()+"_bbb.jpg"
+                )
+        );
+        Optional<Member> result = memberRepository.findById(1L);
+        Member member = result.orElseThrow();
+        boardService.register(boardRequestDTO, member);
+    }
+
+    @Test
+    public void testReadAll() {
+        Long id = 102L;
+        BoardResponseDTO boardResponseDTO = boardService.read(id);
+        log.info(boardResponseDTO);
+        for(String fileName : boardResponseDTO.getFileNames()) {
+            log.info(fileName);
+        }
+    }
+    @Test
+    void testModifyImages() {
+        Optional<Member> result = memberRepository.findById(1L);
+        Member member = result.orElseThrow();
+        BoardRequestDTO boardRequestDTO = BoardRequestDTO.builder()
+                .title("title")
+                .content("content")
+                .build();
+
+        boardRequestDTO.setFileNames(Arrays.asList(UUID.randomUUID()+"_zzz.jpg"));
+        boardService.modify(102L, boardRequestDTO,member);
+    }
+
+    @Test
+    void testRemoveAll() {
+        Long boardId = 1L;
+        Optional<Member> result = memberRepository.findById(1L);
+        Member member = result.orElseThrow();
+        boardService.delete(boardId, member);
+    }
+    @Test
+    void testListWithAll() {
+        List<BoardListAllDTO> boardListAllDTOList = boardService.listWithAll();
+        log.info("---------------size---------------");
+        boardListAllDTOList.forEach(boardListAllDTO -> log.info(boardListAllDTO));
+    }
 }
