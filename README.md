@@ -1,5 +1,5 @@
 # 📻 News Feed Project
-<img src="https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=News Feed!&fontSize=90" />
+![header](https://capsule-render.vercel.app/api?type=waving&color=timeGradient&text=NewsFeedProject!!&animation=twinkling&fontSize=35&fontAlignY=40&fontAlign=50&height=250)
 
 ## 📇 개요
 <b>뉴스피드(New Speed 아님!) 팀 프로젝트</b><br>
