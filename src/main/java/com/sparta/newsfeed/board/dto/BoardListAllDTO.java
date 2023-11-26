@@ -1,6 +1,7 @@
 package com.sparta.newsfeed.board.dto;
 
-import com.sparta.newsfeed.comment.domain.Comment;
+import com.sparta.newsfeed.file.dto.BoardImageDTO;
+import com.sparta.newsfeed.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardResponseDTO {
+public class BoardListAllDTO {
     private String title;
+    private Member member;
     private String content;
-    private Long userId;
-    private List<String> fileNames;
     private LocalDateTime createdAt;
+    private List<BoardImageDTO> boardImages;
 }
