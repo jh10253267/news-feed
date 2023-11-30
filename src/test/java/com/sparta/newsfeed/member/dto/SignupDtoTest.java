@@ -34,7 +34,7 @@ public class SignupDtoTest {
 
         // when, then
         assertThrows(ConstraintViolationException.class, () -> validateSignupDto(signupDto));
-        //
+
     }
 
     @Test
