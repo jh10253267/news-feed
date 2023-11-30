@@ -3,9 +3,11 @@ package com.sparta.newsfeed.member.dto;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class LoginDto {
     // 제약 조건 추가
     @NotBlank
