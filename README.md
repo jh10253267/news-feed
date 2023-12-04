@@ -112,13 +112,12 @@
 ### 게시글
 * ```POST``` ```/api/boards``` 게시글 작성<br>
 * ```PUT``` ```/api/boards/{boardId}``` 게시글 수정<br>
-* ```DELETE``` ```/api/boards/{boardId}``` 게시글 조회<br>
-* ```DELETE``` ```/api/boards/{boardId}``` 게시글 삭제<br>
+* ```GET``` ```/api/boards/{boardId}``` 게시글 조회<br>
 * ```DELETE``` ```/api/boards/{boardId}``` 게시글 삭제<br>
 ### 댓글
 * ```POST``` ```/api/boards/{boardId}/comments``` 댓글 작성<br>
-* ```PUT``` ```/api/boards/{boardId}/comments/{commentID}``` 댓글 수정<br>
-* ```DELETE``` ```/api/boards/{boardId}/comments/{commentID}``` 댓글 삭제<br>
+* ```PUT``` ```/api/boards/{boardId}/comments/{commentId}``` 댓글 수정<br>
+* ```DELETE``` ```/api/boards/{boardId}/comments/{commentId}``` 댓글 삭제<br>
 ### 회원 
 * ```GET``` ```/api/user/{username}``` 유저 정보 조회
 * ```PUT``` ```/api/user/{username}``` 유저 정보 수정
