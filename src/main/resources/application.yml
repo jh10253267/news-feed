@@ -1,24 +1,35 @@
-server.port=8080
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
 
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+      properties:
+        hibernate:
+          format_sql: true
 
-spring.datasource.url= ${DB_URL}
-spring.datasource.username= ${DB_USER}
-spring.datasource.password= ${DB_PASSWORD} 
+      show-sql: true
+      defer-datasource-initialization: true
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
 
-logging.level.org.springframework=info
-logging.level.com.sparta.newsfeed=debug
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
-jwt.secret.key=${SECRET_KEY}
+  servlet:
+    multipart:
+      enabled: true
+      location: /Users/gwonjunhyeog/Documents/workspace/news-feed/upload
+      max-file-size: 10MB
+      max-request-size: 30MB
 
-spring.servlet.multipart.enabled=true
-spring.servlet.multipart.location=/Users/gwonjunhyeog/Documents/workspace/news-feed/upload
-spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=30MB
+com.sparta.newfeed.upload.path: /Users/gwonjunhyeog/Documents/workspace/news-feed/upload
 
-com.sparta.newfeed.upload.path=/Users/gwonjunhyeog/Documents/workspace/news-feed/upload
+jwt:
+  secret:
+    key: ${SECRET_KEY}
