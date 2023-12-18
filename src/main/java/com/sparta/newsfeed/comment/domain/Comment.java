@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.comment.domain;
 
 import com.sparta.newsfeed.board.domain.Board;
-import com.sparta.newsfeed.domain.BaseEntity;
+import com.sparta.newsfeed.grobal.domain.BaseEntity;
 import com.sparta.newsfeed.comment.dto.CommentRequestDto;
 import com.sparta.newsfeed.member.domain.Member;
 import jakarta.persistence.*;
