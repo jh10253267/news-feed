@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.domain;
+package com.sparta.newsfeed.grobal.domain;
 
 
 import jakarta.persistence.Column;
