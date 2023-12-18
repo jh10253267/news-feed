@@ -44,7 +44,7 @@ public class CommentService {
         return ResponseEntity.status(HttpStatus.OK).body(new CommentResponseDto(comment));
     }
 
-    /*// 댓글 조회
+    // 댓글 조회
     public List<CommentResponseDto> getComments(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new NullPointerException("존재하지 않습니다")
@@ -58,7 +58,7 @@ public class CommentService {
         }
 
         return responseDtoList;
-    }*/
+    }
 
     // 댓글 수정
     @Transactional

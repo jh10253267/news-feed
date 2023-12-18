@@ -1,17 +1,14 @@
 package com.sparta.newsfeed.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sparta.newsfeed.domain.BaseEntity;
-import com.sparta.newsfeed.comment.domain.Comment;
+import com.sparta.newsfeed.grobal.domain.BaseEntity;
 import com.sparta.newsfeed.file.domain.BoardImage;
 import com.sparta.newsfeed.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

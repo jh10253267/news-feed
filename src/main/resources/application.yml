@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+
+      properties:
+        hibernate:
+          format_sql: true
+
+      show-sql: true
+      defer-datasource-initialization: true
+
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  servlet:
+    multipart:
+      enabled: true
+      location: /Users/gwonjunhyeog/Documents/workspace/news-feed/upload
+      max-file-size: 10MB
+      max-request-size: 30MB
+
+com.sparta.newfeed.upload.path: /Users/gwonjunhyeog/Documents/workspace/news-feed/upload
+
+jwt:
+  secret:
+    key: ${SECRET_KEY}

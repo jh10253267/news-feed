@@ -14,6 +14,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -33,11 +35,11 @@ public class CommentController {
         return commentService.createComment(boardId, commentRequestDto, memberDetails.getMember());
     }
 
-    /*// 댓글 조회
+    // 댓글 조회
     @GetMapping("/comment/{boardId}")
     public List<CommentResponseDto> getComments(@PathVariable Long boardId) {
         return commentService.getComments(boardId);
-    }*/
+    }
 
     // 댓글 수정
     @Operation(summary = "댓글 수정", description = "로그인한 사용자는 자신의 댓글을 수정할 수 있다.")

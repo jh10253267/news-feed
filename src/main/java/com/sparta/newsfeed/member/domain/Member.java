@@ -1,6 +1,6 @@
 package com.sparta.newsfeed.member.domain;
 
-import com.sparta.newsfeed.domain.BaseEntity;
+import com.sparta.newsfeed.grobal.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

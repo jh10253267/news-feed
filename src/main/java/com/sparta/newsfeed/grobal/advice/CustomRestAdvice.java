@@ -1,4 +1,4 @@
-package com.sparta.newsfeed.advice;
+package com.sparta.newsfeed.grobal.advice;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.EmptyResultDataAccessException;
